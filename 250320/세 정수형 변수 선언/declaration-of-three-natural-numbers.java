@@ -1,12 +1,10 @@
 public class Main {
     public static void main(String[] args) {
         // Please write your code here.
-        int a = 13;
-        double b = 0.165;
+        int a = 7;
+        int b = 23;
+        int c = 30;
 
-        double result = a*b;
-
-        System.out.print(a + " * " + b + " = ");
-        System.out.printf("%.6f",result);
+        System.out.println(a + " + " + b + " = " + c);
     }
 }

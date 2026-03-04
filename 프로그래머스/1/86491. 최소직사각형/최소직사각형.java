@@ -2,21 +2,16 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] sizes) {
-        int answer = 0;
+        int w_max = 0;
+        int h_max = 0;       
         
-        int maxRow = 0;
-        int maxCol = 0;
-        
-        for(int i=0; i< sizes.length;i++){
-            if(sizes[i][0]<sizes[i][1]){
-                int tmp = sizes[i][0];
-                sizes[i][0] = sizes[i][1];
-                sizes[i][1] = tmp;
-            }
-            if(maxRow<sizes[i][0]) maxRow = sizes[i][0]; // 최대값
-            if(maxCol<sizes[i][1]) maxCol = sizes[i][1]; // 최대값
+        for(int i = 0; i < sizes.length; i++){
+            int w = Math.max(sizes[i][0], sizes[i][1]);
+            int h = Math.min(sizes[i][0], sizes[i][1]);
+            
+            w_max = Math.max(w_max, w);
+            h_max = Math.max(h_max, h);
         }
-        answer = maxRow * maxCol;
-        return answer;
+        return w_max * h_max;
     }
 }

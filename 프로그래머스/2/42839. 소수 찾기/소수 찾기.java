@@ -1,51 +1,58 @@
 import java.util.*;
 
 class Solution {
-    static ArrayList<Integer> arr = new ArrayList<>();
-    static boolean[] check = new boolean[7];
-    
+    static HashSet<Integer> set = new HashSet<>();
+    static boolean[] visited;
+    static boolean[] isPrime;
+
     public int solution(String numbers) {
-        int answer = 0;
         
-        for(int i=0; i<numbers.length(); i++){
-            dfs(numbers,"",i+1);
+        visited = new boolean[numbers.length()];
+        
+        dfs("", numbers, visited);
+        //System.out.println("set 내용: " + set);
+        
+        int max = Collections.max(set);
+        //System.out.println("max 값: " + max);
+        
+        isPrimeFunc(max);
+        
+        int count = 0;
+        
+        for(int num : set){
+            //System.out.println("검사 숫자: " + num + " -> " + isPrime[num]);
+            if(isPrime[num])
+                count++;
         }
-        
-        for(int i=0; i<arr.size(); i++){
-            if(prime(arr.get(i))) answer++;              
-        }
-        
-        return answer;
+        return count;
     }
     
-    //백트래킹
-	static void dfs(String str, String temp, int m) {
-            if(temp.length() == m){
-                int num = Integer.parseInt(temp);
-                if(!arr.contains(num)){
-                    arr.add(num);
-                }
+    static void dfs(String current, String numbers, boolean[] visited){
+        if(!current.equals("")){
+            set.add(Integer.parseInt(current));
+            //System.out.println("생성된 숫자 : " + Integer.parseInt(current));
+        }
+        for(int i = 0; i < numbers.length(); i++){
+            if(!visited[i]){
+                visited[i] = true;
+                // System.out.println("DFS 진행: " + current + " + " + numbers.charAt(i));
+                
+                dfs(current+numbers.charAt(i), numbers, visited);
+                visited[i] = false;
             }
+        }
+    }
+    
+    static void isPrimeFunc(int max){
+        isPrime = new boolean[max + 1];
+        Arrays.fill(isPrime, true);
         
-            for(int i=0; i<str.length(); i++){
-                if(!check[i]){
-                    check[i] = true;
-                    temp += str.charAt(i);
-                    dfs(str, temp, m);
-                    check[i] = false;
-                    temp = temp.substring(0, temp.length()-1);
-                }
+        isPrime[0] = isPrime[1] = false;
+        
+        for(int i = 2; i * i < max; i++){
+            for(int j = i * i; j <= max; j += i){
+                isPrime[j] = false;
             }
-		
-	}
-	//소수 판단
-	static boolean prime(int n) {
-		if(n<2) return false;
-		
-		for(int i=2; i*i<=n; i++) {
-			if(n % i == 0) return false;
-		}
-		
-		return true;
-	}
+        }
+    }
 }

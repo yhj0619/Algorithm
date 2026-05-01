@@ -1,20 +1,18 @@
 class Solution {
+ 
     boolean[] visited;
-    
     public int solution(int n, int[][] computers) {
         int answer = 0;
         visited = new boolean[n];
-        
         for(int i = 0; i < n; i++){
             if(!visited[i]){
                 dfs(i, n, computers);
                 answer++;
             }
         }
-        
         return answer;
     }
-    void dfs(int current, int n, int[][] computers) {
+    void dfs(int current, int n, int[][] computers){
         visited[current] = true;
         
         for(int next = 0; next < n; next++){
@@ -22,5 +20,4 @@ class Solution {
                 dfs(next, n, computers);
         }
     }
-    
 }

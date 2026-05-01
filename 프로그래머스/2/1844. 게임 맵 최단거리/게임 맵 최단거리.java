@@ -1,56 +1,39 @@
 import java.util.*;
 
 class Solution {
-
-    //상하좌우
-    int[] mX = {1, -1, 0, 0};
-    int[] mY = {0, 0, 1, -1};
-
     public int solution(int[][] maps) {
-        int answer = 0;
-
-        int[][] visited = new int[maps.length][maps[0].length];
-
-        bfs(maps, visited);
-
-        answer = visited[maps.length - 1][maps[0].length - 1];
-
-        if (answer == 0) {
-            answer = -1;
-        }
-
-        return answer;
-    }
-
-    public void bfs(int[][] maps, int[][] visited) {
-        // 시작 지점 방문 한 걸로
-        int x = 0; 
-        int y = 0;
-        visited[x][y] = 1;
-
+        
+        int n = maps.length;
+        int m = maps[0].length;
+        
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+        
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{x, y});
-
-        while (!queue.isEmpty()) {
-            int[] now = queue.poll(); // 현재 위치를 큐에서 꺼냄
-            int nX = now[0];
-            int nY = now[1];
-
-            // 상하좌우 탐색하기
-            for (int i = 0; i < 4; i++) {
-                int X = nX + mX[i];
-                int Y = nY + mY[i]; 
-
-                // 범위 벗어나는건 지나가기
-                if (X < 0 || X >= maps.length || Y < 0 || Y >= maps[0].length) {
-                    continue;
-                }
-
-                if (visited[X][Y] == 0 && maps[X][Y] == 1) {
-                    visited[X][Y] = visited[nX][nY] + 1;
-                    queue.add(new int[]{X, Y});
-                }
+        queue.offer(new int[]{0, 0});
+        
+        boolean[][] visited = new boolean[n][m];
+        visited[0][0] = true;
+        
+        while(!queue.isEmpty()){
+            int[] now = queue.poll();
+            int x = now[0];
+            int y = now[1];
+            
+            for(int i = 0; i < 4; i++){
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+                
+                if(nx < 0||ny < 0|| nx>=n||ny >=m) continue;
+                if(visited[nx][ny]) continue;
+                if(maps[nx][ny] == 0) continue;
+                
+                visited[nx][ny] = true;
+                maps[nx][ny] = maps[x][y] +1;
+                queue.offer(new int[]{nx,ny});
             }
         }
+        
+        return maps[n-1][m-1] == 1? -1 : maps[n-1][m-1];
     }
 }
